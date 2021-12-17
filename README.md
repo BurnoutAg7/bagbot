@@ -5,3 +5,5 @@
 ## 计划
 
 可能添加moderate content和saucenao等工具。
+
+希望实现命运2相关的简单查询功能。
