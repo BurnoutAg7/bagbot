@@ -2,11 +2,13 @@ from nonebot import on_startswith
 from nonebot.typing import T_State
 from nonebot.adapters import Bot, Event
 from nonebot.adapters.cqhttp import MessageSegment
-from nonebot.plugin import require
+import httpx
+async def get(url: str, **kwargs):
+    async with httpx.AsyncClient() as client:
+        return await client.get(url, **kwargs)
 
 lolicon_api = 'https://api.lolicon.app/setu/v2'
 pic_size = 'regular'
-requests = require('requests')
 
 setu = on_startswith('涩图')
 
@@ -19,7 +21,7 @@ async def deal_setu(bot: Bot, event: Event, state: T_State):
     if len(args) > 1:
         params['tag'] = args[1]
     try:
-        req = await requests.send_get(lolicon_api, params=params)
+        req = await get(lolicon_api, params=params)
         data = req.json()
     except Exception as e:
         await setu.finish('访问lolicon API失败，错误为：'+str(repr(e)))
