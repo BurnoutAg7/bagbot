@@ -20,8 +20,8 @@ async def deal_setu(bot: Bot, event: Event, state: T_State):
         for i in range(1, len(args)):
             params['tag'].append(args[i])
     try:
-        req = await requests.get(lolicon_api, params=params)
-        data = req.json()
+        res = await requests.get(lolicon_api, params=params)
+        data = res.json()
     except Exception as e:
         await setu.finish('访问lolicon API失败，错误为：'+str(repr(e)))
     if data['error'] != '':
