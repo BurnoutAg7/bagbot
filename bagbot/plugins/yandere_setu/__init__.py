@@ -3,7 +3,7 @@ from nonebot.typing import T_State
 from nonebot.adapters import Bot, Event
 from nonebot.adapters.cqhttp import MessageSegment
 from bagbot.utils import requests
-import random, time
+import random, urllib.parse
 
 yandere_api = 'https://yande.re/post.json'
 base_params = {
@@ -22,8 +22,9 @@ async def deal_setu(bot: Bot, event: Event, state: T_State):
         params['tags'] = args[1]
         for i in range(2, len(args)):
             params['tags'] += '+' + args[i]
+    payload = urllib.parse.urlencode(params, safe=':+')
     try:
-        res = await requests.get(yandere_api, params=params)
+        res = await requests.get(yandere_api, params=payload)
         data = res.json()['posts']
     except Exception as e:
         await setu.finish('访问yandere API失败，错误为：'+repr(e))
