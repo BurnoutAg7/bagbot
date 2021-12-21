@@ -2,10 +2,7 @@ from nonebot import on_startswith
 from nonebot.typing import T_State
 from nonebot.adapters import Bot, Event
 from nonebot.adapters.cqhttp import MessageSegment
-import httpx
-async def get(url: str, **kwargs):
-    async with httpx.AsyncClient() as client:
-        return await client.get(url, **kwargs)
+from bagbot.utils import requests
 
 lolicon_api = 'https://api.lolicon.app/setu/v2'
 pic_size = 'regular'
@@ -19,9 +16,11 @@ async def deal_setu(bot: Bot, event: Event, state: T_State):
     params = dict()
     params['size'] = pic_size
     if len(args) > 1:
-        params['tag'] = args[1]
+        params['tag'] = list()
+        for i in range(1, len(args)):
+            params['tag'].append(args[i])
     try:
-        req = await get(lolicon_api, params=params)
+        req = await requests.get(lolicon_api, params=params)
         data = req.json()
     except Exception as e:
         await setu.finish('访问lolicon API失败，错误为：'+str(repr(e)))
@@ -30,13 +29,12 @@ async def deal_setu(bot: Bot, event: Event, state: T_State):
     if len(data['data']) == 0:
         await setu.finish('找不到指定tag的涩图')
     data = data['data'][0]
-    description = 'PixivID: '+str(data['pid'])+'\n'
+    description = 'PixivID: '+str(data['pid'])
     url = data['urls'][pic_size]
     if len(data['tags']):
+        description += '\n'
         for i in range(1, len(data['tags'])):
             description += '#'+data['tags'][i]+' '
-        description = description[:-1]+'\n'+url
-    else:
-        description = description+url
+        description = description[:-1]
     await setu.send(description)
     await setu.finish(MessageSegment.image(url))
