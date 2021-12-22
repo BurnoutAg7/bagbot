@@ -6,7 +6,7 @@ from bagbot.utils import requests
 import random, urllib.parse
 
 yandere_api = 'https://yande.re/post.json'
-base_params = {
+params = {
     'api_version': 2,
     'limit': 100
 }
@@ -17,11 +17,13 @@ ctime = -1
 @setu.handle()
 async def deal_setu(bot: Bot, event: Event, state: T_State):
     args = str(event.get_message()).split()
-    params = base_params
     if len(args) > 1:
         params['tags'] = args[1]
         for i in range(2, len(args)):
             params['tags'] += '+' + args[i]
+    else:
+        if 'tags' in params:
+            params.pop['tags']
     payload = urllib.parse.urlencode(params, safe=':+')
     try:
         res = await requests.get(yandere_api, params=payload)
