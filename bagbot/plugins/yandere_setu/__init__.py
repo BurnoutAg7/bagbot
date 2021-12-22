@@ -30,7 +30,8 @@ async def deal_setu(bot: Bot, event: Event, state: T_State):
         await setu.finish('访问yandere API失败，错误为：'+repr(e))
     if len(data) == 0:
         await setu.finish('返回列表为空')
-    url = data[random.randint(0, len(data)-1)]['sample_url']
+    i = random.randint(0, len(data)-1)
+    url = data[i]['sample_url']
     description = 'yandereID: ' + str(data[i]['id']) + '\n'
     description += 'tags: ' + data[i]['tags'] + '\n'
     await setu.send(description)
