@@ -23,7 +23,7 @@ async def deal_setu(bot: Bot, event: Event, state: T_State):
             params['tags'] += '+' + args[i]
     else:
         if 'tags' in params:
-            params.pop['tags']
+            params.pop('tags')
     payload = urllib.parse.urlencode(params, safe=':+')
     try:
         res = await requests.get(yandere_api, params=payload)
