@@ -13,6 +13,8 @@ setu = on_startswith('涩图')
 @setu.handle()
 async def deal_setu(bot: Bot, event: Event, state: T_State):
     args = str(event.get_message()).split()
+    if args[0] != '涩图':
+        await setu.finish()
     params = dict()
     params['size'] = pic_size
     if len(args) > 1:

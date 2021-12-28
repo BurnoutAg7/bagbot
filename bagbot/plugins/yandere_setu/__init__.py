@@ -18,6 +18,8 @@ ctime = -1
 @setu.handle()
 async def deal_setu(bot: Bot, event: Event, state: T_State):
     args = str(event.get_message()).split()
+    if args[0] != 'yandere':
+        await setu.finish()
     params['tags'] = basetags
     if len(args) > 1:
         for i in range(1, len(args)):
