@@ -3,7 +3,9 @@ from nonebot.typing import T_State
 from nonebot.adapters import Bot, Event
 from nonebot.adapters.cqhttp import MessageSegment
 from bagbot.utils import requests
-import random, urllib.parse
+import random
+import urllib.parse
+import asyncio
 
 yandere_api = 'https://yande.re/post.json'
 params = {
@@ -14,6 +16,7 @@ basetags = 'rating:questionable'
 
 setu = on_startswith('yandere')
 ctime = -1
+
 
 @setu.handle()
 async def deal_setu(bot: Bot, event: Event, state: T_State):
@@ -37,4 +40,6 @@ async def deal_setu(bot: Bot, event: Event, state: T_State):
     description = 'yandereID: ' + str(data[i]['id']) + '\n'
     description += 'tags: ' + data[i]['tags'] + '\n'
     await setu.send(description)
-    await setu.finish(MessageSegment.image(url))
+    message = await setu.send(MessageSegment.image(url))
+    await asyncio.sleep(30)
+    await bot.delete_msg(message)
