@@ -40,6 +40,6 @@ async def deal_setu(bot: Bot, event: Event, state: T_State):
     description = 'yandereID: ' + str(data[i]['id']) + '\n'
     description += 'tags: ' + data[i]['tags'] + '\n'
     await setu.send(description)
-    message = await setu.send(MessageSegment.image(url))['message_id']
+    message = await setu.send(MessageSegment.image(url))
     await asyncio.sleep(30)
-    await bot.delete_msg(message_id=message)
+    await bot.delete_msg(message_id=message['message_id'])
