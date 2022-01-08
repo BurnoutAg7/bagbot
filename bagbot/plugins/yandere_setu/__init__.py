@@ -42,4 +42,4 @@ async def deal_setu(bot: Bot, event: Event, state: T_State):
     await setu.send(description)
     message = await setu.send(MessageSegment.image(url))
     await asyncio.sleep(30)
-    await bot.delete_msg(message)
+    await bot.call_api('/delete_msg',message)
