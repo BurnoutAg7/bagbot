@@ -1,6 +1,5 @@
 from nonebot import on_startswith
-from nonebot.typing import T_State
-from nonebot.adapters import Bot, Event
+from nonebot.adapters import Event
 from nonebot.adapters.telegram import MessageSegment
 from bagbot.utils import requests
 import random
@@ -18,8 +17,8 @@ ctime = -1
 
 
 @setu.handle()
-async def deal_setu(bot: Bot, event: Event, state: T_State):
-    args = str(event.get_message()).split()
+async def deal_setu(event: Event):
+    args = str(event.get_plaintext()).split()
     if args[0] != 'yandere':
         await setu.finish()
     params['tags'] = basetags

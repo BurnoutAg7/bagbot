@@ -1,6 +1,5 @@
 from nonebot import on_startswith
-from nonebot.typing import T_State
-from nonebot.adapters import Bot, Event
+from nonebot.adapters import Event
 from nonebot.adapters.telegram import MessageSegment
 from bagbot.utils import requests
 
@@ -11,8 +10,8 @@ setu = on_startswith('涩图')
 
 
 @setu.handle()
-async def deal_setu(bot: Bot, event: Event, state: T_State):
-    args = str(event.get_message()).split()
+async def deal_setu(event: Event):
+    args = str(event.get_plaintext()).split()
     if args[0] != '涩图':
         await setu.finish()
     params = dict()
@@ -36,6 +35,6 @@ async def deal_setu(bot: Bot, event: Event, state: T_State):
     if len(data['tags']):
         description += '\n'
         for i in range(1, len(data['tags'])):
-            description += '#'+data['tags'][i]+' '
+            description += data['tags'][i]+' '
         description = description[:-1]
     await setu.finish(MessageSegment.photo(file=url, caption=description))
