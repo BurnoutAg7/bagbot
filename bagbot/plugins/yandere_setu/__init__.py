@@ -1,11 +1,10 @@
 from nonebot import on_startswith
 from nonebot.typing import T_State
 from nonebot.adapters import Bot, Event
-from nonebot.adapters.cqhttp import MessageSegment
+from nonebot.adapters.telegram import MessageSegment
 from bagbot.utils import requests
 import random
 import urllib.parse
-import asyncio
 
 yandere_api = 'https://yande.re/post.json'
 params = {
@@ -39,7 +38,4 @@ async def deal_setu(bot: Bot, event: Event, state: T_State):
     url = data[i]['sample_url']
     description = 'yandereID: ' + str(data[i]['id']) + '\n'
     description += 'tags: ' + data[i]['tags'] + '\n'
-    await setu.send(description)
-    message = await setu.send(MessageSegment.image(url))
-    await asyncio.sleep(30)
-    await bot.delete_msg(message_id=message['message_id'])
+    await setu.finish(MessageSegment.photo(file=url, caption=description))
