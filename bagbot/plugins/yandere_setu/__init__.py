@@ -1,4 +1,4 @@
-from nonebot import on_startswith
+from nonebot import on_command
 from nonebot.adapters import Event
 from nonebot.adapters.telegram import MessageSegment
 from bagbot.utils import requests
@@ -12,19 +12,16 @@ params = {
 }
 basetags = 'rating:questionable'
 
-setu = on_startswith('yandere')
+setu = on_command('yandere')
 ctime = -1
 
 
 @setu.handle()
 async def deal_setu(event: Event):
     args = str(event.get_plaintext()).split()
-    if args[0] != 'yandere':
-        await setu.finish()
     params['tags'] = basetags
-    if len(args) > 1:
-        for i in range(1, len(args)):
-            params['tags'] += '+' + args[i]
+    for i in range(1, len(args)):
+        params['tags'] += '+' + args[i]
     payload = urllib.parse.urlencode(params, safe=':+')
     try:
         res = await requests.get(yandere_api, params=payload)

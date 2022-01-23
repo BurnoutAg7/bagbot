@@ -1,4 +1,4 @@
-from nonebot import on_startswith
+from nonebot import on_command
 from nonebot.adapters import Event
 from nonebot.adapters.telegram import MessageSegment
 from bagbot.utils import requests
@@ -6,14 +6,13 @@ from bagbot.utils import requests
 lolicon_api = 'https://api.lolicon.app/setu/v2'
 pic_size = 'regular'
 
-setu = on_startswith('涩图')
+setu = on_command('lolicon')
 
 
 @setu.handle()
 async def deal_setu(event: Event):
     args = str(event.get_plaintext()).split()
-    if args[0] != '涩图':
-        await setu.finish()
+    setu.send('获取到的信息为：' + event.get_plaintext())
     params = dict()
     params['size'] = pic_size
     if len(args) > 1:
