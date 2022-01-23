@@ -12,7 +12,6 @@ setu = on_command('lolicon')
 @setu.handle()
 async def deal_setu(event: Event):
     args = str(event.get_plaintext()).split()
-    setu.send('获取到的信息为：' + event.get_plaintext())
     params = dict()
     params['size'] = pic_size
     if len(args) > 1:
@@ -36,4 +35,4 @@ async def deal_setu(event: Event):
         for i in range(1, len(data['tags'])):
             description += data['tags'][i]+' '
         description = description[:-1]
-    await setu.finish(MessageSegment.photo(file=url, caption=description))
+    await setu.finish('获取到的信息为：' + event.get_plaintext() + '\n' + MessageSegment.photo(file=url, caption=description))
