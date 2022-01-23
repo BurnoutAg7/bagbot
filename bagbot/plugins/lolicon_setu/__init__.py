@@ -35,4 +35,4 @@ async def deal_setu(event: Event):
         for i in range(1, len(data['tags'])):
             description += data['tags'][i]+' '
         description = description[:-1]
-    await setu.finish('获取到的信息为：' + event.get_plaintext() + '\n' + MessageSegment.photo(file=url, caption=description))
+    await setu.finish(MessageSegment.photo(file=url, caption=description))
