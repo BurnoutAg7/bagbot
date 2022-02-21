@@ -7,7 +7,7 @@ ban = on_command('ban')
 
 
 @ban.handle()
-async def deal_setu(event: Event, bot: Bot):
+async def deal_ban(event: MessageEvent, bot: Bot):
     try:
         ban_len = str(event.get_plaintext()).split()[1]
     except Exception:
@@ -16,8 +16,7 @@ async def deal_setu(event: Event, bot: Bot):
         ban_len = int(ban_len)
     except Exception:
         await ban.finish('时间不是整数')
-    message_event = MessageEvent(event)
-    original = message_event.reply_to_message
+    original = event.reply_to_message
     if original == None:
         await ban.finish('请回复一个消息')
     chat = original.get_session_id()
