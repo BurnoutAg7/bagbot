@@ -12,7 +12,9 @@ async def deal_setu(event: Event, bot: Bot):
         ban_len = str(event.get_plaintext()).split()[1]
     except Exception:
         await ban.finish('未指定时间')
-    if type(ban_len) != int:
+    try:
+        ban_len = int(ban_len)
+    except Exception:
         await ban.finish('时间不是整数')
     message_event = MessageEvent(event)
     original = message_event.reply_to_message
