@@ -28,5 +28,4 @@ async def deal_choyen(event: Event):
     for i in range(3, len(args)):
         params['bottom'] += ' ' + args[i]
     url = yurafuca + urlencode(params)
-    await choyen.send(url)
-    await choyen.finish(MessageSegment.photo(file=url))
+    await choyen.finish(url)
