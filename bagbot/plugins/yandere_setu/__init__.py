@@ -1,6 +1,6 @@
 from nonebot import on_command
 from nonebot.adapters import Event
-from nonebot.adapters.telegram import MessageSegment
+from nonebot.adapters.telegram.message import MessageSegment, File
 from bagbot.utils import requests
 import random
 import urllib.parse
@@ -34,4 +34,4 @@ async def deal_setu(event: Event):
     url = data[i]['sample_url']
     description = 'yandereID: ' + str(data[i]['id']) + '\n'
     description += 'tags: ' + data[i]['tags'] + '\n'
-    await setu.finish(MessageSegment.photo(file=url, caption=description))
+    await setu.finish(File.photo(file=url)+description)

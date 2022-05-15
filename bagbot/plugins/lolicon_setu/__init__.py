@@ -1,6 +1,6 @@
 from nonebot import on_command
 from nonebot.adapters import Event
-from nonebot.adapters.telegram import MessageSegment
+from nonebot.adapters.telegram.message import MessageSegment, File
 from bagbot.utils import requests
 
 lolicon_api = 'https://api.lolicon.app/setu/v2'
@@ -35,4 +35,4 @@ async def deal_setu(event: Event):
         for i in range(1, len(data['tags'])):
             description += data['tags'][i]+' '
         description = description[:-1]
-    await setu.finish(MessageSegment.photo(file=url, caption=description))
+    await setu.finish(File.photo(file=url)+description)
