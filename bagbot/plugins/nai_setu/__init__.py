@@ -6,6 +6,7 @@ from nonebot import get_driver
 import json
 import httpx
 import base64
+import random
 
 config = get_driver().config
 headers = {
@@ -22,6 +23,7 @@ body = json.loads('''
     "scale": 12,
     "sampler": "k_euler_ancestral",
     "steps": 28,
+    "seed": 0,
     "n_samples": 1,
     "strength": 0.7,
     "noise": 0.2,
@@ -44,6 +46,8 @@ async def deal_portrait(event: Event):
     body['input'] = args
     body['parameters']['width'] = 512
     body['parameters']['height'] = 768
+    seed = random.randint(0, 4294967295)
+    body['parameters']['seed'] = seed
     try:
         res = await requests.post(url=url, headers=headers, json=body, timeout=30)
     except httpx.ReadTimeout:
@@ -52,7 +56,7 @@ async def deal_portrait(event: Event):
         await portrait.finish('返回状态码不正常')
     b64s = res.text[res.text.find('data:')+5:]
     img = base64.b64decode(b64s)
-    await portrait.finish(File.photo(img))
+    await portrait.finish(File.photo(img)+str(seed))
 
 landscape = on_command('nai_landscape')
 
@@ -66,6 +70,8 @@ async def deal_landscape(event: Event):
     body['input'] = args
     body['parameters']['width'] = 768
     body['parameters']['height'] = 512
+    seed = random.randint(0, 4294967295)
+    body['parameters']['seed'] = seed
     try:
         res = await requests.post(url=url, headers=headers, json=body, timeout=30)
     except httpx.ReadTimeout:
@@ -74,4 +80,4 @@ async def deal_landscape(event: Event):
         await landscape.finish('返回状态码不正常')
     b64s = res.text[res.text.find('data:')+5:]
     img = base64.b64decode(b64s)
-    await landscape.finish(File.photo(img))
+    await landscape.finish(File.photo(img)+str(seed))
