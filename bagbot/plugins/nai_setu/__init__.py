@@ -16,17 +16,15 @@ headers['Authorization'] = 'Bearer '+config.nai_token
 body = json.loads('''
 {
   "input": "",
-  "model": "safe-diffusion",
+  "model": "nai-diffusion",
   "parameters": {
     "width": 512,
     "height": 768,
-    "scale": 12,
+    "scale": 11,
     "sampler": "k_euler_ancestral",
     "steps": 28,
     "seed": 0,
     "n_samples": 1,
-    "strength": 0.7,
-    "noise": 0.2,
     "ucPreset": 0,
     "uc": "lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry"
   }
@@ -81,3 +79,27 @@ async def deal_landscape(event: Event):
     b64s = res.text[res.text.find('data:')+5:]
     img = base64.b64decode(b64s)
     await landscape.finish(File.photo(img)+str(seed))
+
+square = on_command('nai_square')
+
+
+@square.handle()
+async def deal_square(event: Event):
+    args = str(event.get_plaintext()).split()
+    if len(args) == 1:
+        await square.finish('必须给 nai 指定作图要求')
+    args = ' '.join(args[1:])
+    body['input'] = args
+    body['parameters']['width'] = 640
+    body['parameters']['height'] = 640
+    seed = random.randint(0, 4294967295)
+    body['parameters']['seed'] = seed
+    try:
+        res = await requests.post(url=url, headers=headers, json=body, timeout=30)
+    except httpx.ReadTimeout:
+        await square.send('请求超时')
+    if res.status_code != 201:
+        await square.finish('返回状态码不正常')
+    b64s = res.text[res.text.find('data:')+5:]
+    img = base64.b64decode(b64s)
+    await square.finish(File.photo(img)+str(seed))
