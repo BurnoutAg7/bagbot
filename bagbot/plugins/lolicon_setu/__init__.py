@@ -30,6 +30,7 @@ async def deal_setu(event: Event):
     data = data['data'][0]
     description = 'PixivID: '+str(data['pid'])
     url = data['urls'][pic_size]
+    url = url.replace('pixiv.re', 'pixiv.cat')
     if len(data['tags']):
         description += '\n'
         for i in range(1, len(data['tags'])):
