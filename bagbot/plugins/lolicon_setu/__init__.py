@@ -31,9 +31,14 @@ async def deal_setu(event: Event):
     description = 'PixivID: '+str(data['pid'])
     url = data['urls'][pic_size]
     url = url.replace('pixiv.re', 'pixiv.cat')
+    try:
+        img = await requests.get(url=url)
+        img = img.content
+    except:
+        await setu.finish('下载图片失败')
     if len(data['tags']):
         description += '\n'
         for i in range(1, len(data['tags'])):
             description += data['tags'][i]+' '
         description = description[:-1]
-    await setu.finish(File.photo(file=url)+description)
+    await setu.finish(File.photo(file=img)+description)
