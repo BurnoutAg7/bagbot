@@ -47,7 +47,7 @@ async def deal_portrait(event: Event):
     seed = random.randint(0, 4294967295)
     body['parameters']['seed'] = seed
     try:
-        res = await requests.post(url=url, headers=headers, json=body, timeout=30)
+        res = await requests.post(url=url, headers=headers, json=body)
     except httpx.ReadTimeout:
         await portrait.send('请求超时')
     if res.status_code != 201:
@@ -71,7 +71,7 @@ async def deal_landscape(event: Event):
     seed = random.randint(0, 4294967295)
     body['parameters']['seed'] = seed
     try:
-        res = await requests.post(url=url, headers=headers, json=body, timeout=30)
+        res = await requests.post(url=url, headers=headers, json=body)
     except httpx.ReadTimeout:
         await landscape.send('请求超时')
     if res.status_code != 201:
@@ -95,7 +95,7 @@ async def deal_square(event: Event):
     seed = random.randint(0, 4294967295)
     body['parameters']['seed'] = seed
     try:
-        res = await requests.post(url=url, headers=headers, json=body, timeout=30)
+        res = await requests.post(url=url, headers=headers, json=body)
     except httpx.ReadTimeout:
         await square.send('请求超时')
     if res.status_code != 201:
